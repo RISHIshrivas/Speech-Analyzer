@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Speech Analyzer</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#111827">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #0f172a; color: #e5e7eb; }
+    header { padding: 16px 24px; background: #111827; position: sticky; top: 0; border-bottom: 1px solid #1f2937;}
+    h1 { margin: 0; font-size: 20px; }
+    main { padding: 24px; display: grid; gap: 16px; max-width: 920px; margin: 0 auto; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    select, button, textarea, input { background:#111827; color:#e5e7eb; border:1px solid #374151; border-radius:10px; padding:10px 12px; }
+    button { cursor: pointer; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    textarea { width: 100%; min-height: 220px; resize: vertical; }
+    .card { background:#0b1220; border:1px solid #1f2937; border-radius: 16px; padding: 16px; }
+    .muted { color:#9ca3af; font-size: 12px; }
+    .pill { padding: 6px 10px; border-radius: 999px; border:1px solid #374151; }
+    a { color:#93c5fd; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎙️ Speech Analyzer</h1>
+  </header>
+  <main>
+    <section class="card">
+      <div class="row">
+        <button id="startBtn">Start</button>
+        <button id="stopBtn" disabled>Stop</button>
+        <select id="lang">
+          <option value="en-US">English (US)</option>
+          <option value="en-GB">English (UK)</option>
+          <option value="hi-IN" selected>हिन्दी (भारत)</option>
+        </select>
+        <span id="status" class="pill muted">idle</span>
+        <span class="muted">• Uses your browser's speech recognition.</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <label for="transcript" class="muted">Transcript</label>
+      <textarea id="transcript" placeholder="Your live transcript will appear here..." spellcheck="false"></textarea>
+      <div class="row" style="justify-content: space-between;">
+        <div class="row">
+          <button id="copyBtn">Copy</button>
+          <button id="clearBtn">Clear</button>
+        </div>
+        <div class="row">
+          <button id="summaryBtn">Summarize</button>
+          <button id="exportBtn">Export .docx</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <label class="muted">Summary</label>
+      <textarea id="summary" placeholder="Click 'Summarize' to generate a summary..." spellcheck="false"></textarea>
+      <p class="muted">Tip: You can deploy the backend and set <code>window.API_BASE</code> before loading <code>script.js</code> to point the UI at your server.</p>
+    </section>
+
+    <footer class="muted" style="text-align:center;">
+      <p>Installable PWA – works best over HTTPS.</p>
+      <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API" target="_blank" rel="noopener">About Web Speech API</a></p>
+    </footer>
+  </main>
+
+  <!-- Optional override for API base when front-end is hosted separately -->
+  <!-- <script>window.API_BASE = "https://your-backend.example.com";</script> -->
+
+  <!-- Load script after DOM is ready, with cache busting -->
+  <script src="/script.js?v=3" defer></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
